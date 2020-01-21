@@ -33,7 +33,28 @@ var stringifyJSON = function(obj) {
 
   //for array with elements
 
+  if(Array.isArray(obj) && obj.length > 0){
+    var strArr = []
+    for(var i = 0; i < obj.length; i++){
+      var strElem = stringifyJSON(obj[i])
+      strArr.push(strElem)
+    }
+    //join  with.join(',')
+    //NOTE join wont do anything to an array with
+    return resultStr+= '[' + strArr.join(',') + ']'
+  }
+
   //for type object
+  if(typeof obj === 'object'){
+    for(var key in obj){
+      if(obj[key] !== undefined && typeof obj[key] !== 'function'){
+        strProperty = stringifyJSON(key) + ':' + stringifyJSON(obj[key]) + ','
+        resultStr+= strProperty//with comma
+      }
+    }
+    //splice everything but make sure to take that last comma off
+    return '{' + resultStr.slice(0, resultStr.length-1) + '}'
+  }
 
   return resultStr
 };

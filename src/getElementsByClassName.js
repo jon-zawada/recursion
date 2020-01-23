@@ -18,13 +18,18 @@ var getElementsByClassName = function(className
   //element.classList.contains will let us know if the element has that class name
   function elemsContainingClass(element){
     //if the element.classList exists and it contains the one we are looking for
-    if(element.classList && element.classList.contains(className)){
+    if(element.classList !== undefined && element.classList.contains(className)){
       //we can push it to our result array
       elemsWthClassName.push(element)
     }
     //read more about childnodes
     //check if element childnodes
-    if(element.childNodes)
+    if(element.childNodes !== undefined){
+      for(var i = 0; i < element.childNodes.length; i++){
+        elemsContainingClass(element.childNodes[i])
+      }
+    }
   }
-
+  elemsContainingClass(document.body)
+  return elemsWthClassName
 };
